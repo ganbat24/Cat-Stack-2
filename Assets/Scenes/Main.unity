@@ -276,6 +276,7 @@ MonoBehaviour:
   cats:
   - {fileID: -4005715930171226307, guid: 4b1fb512316b99a409984cee31797700, type: 3}
   - {fileID: -6335759184674916043, guid: 282f9310334599c4a9eccccddb3f315e, type: 3}
+  - {fileID: 3577210713880655775, guid: 863dbf9007d98144781c3f2c0b6c1f6d, type: 3}
 --- !u!1 &955223613
 GameObject:
   m_ObjectHideFlags: 0
@@ -289,6 +290,7 @@ GameObject:
   - component: {fileID: 955223615}
   - component: {fileID: 955223614}
   - component: {fileID: 955223618}
+  - component: {fileID: 955223619}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -389,6 +391,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac55be2afad6e8a45ba607aae49e67b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &955223619
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 955223613}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a76dcad797be3946b48904321893ec5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  source: {fileID: 2933983127856037962, guid: 3dea8a70d40467d40b14c612a67e03f3, type: 3}
+  meows:
+  - {fileID: 8300000, guid: f4cbf33e2741efa41bf509df07e393d0, type: 3}
+  - {fileID: 8300000, guid: d4693100387a25443b9988810cfbff49, type: 3}
+  - {fileID: 8300000, guid: 657f6eb5c6198ec42b4a26f03919a151, type: 3}
 --- !u!1 &1071911791
 GameObject:
   m_ObjectHideFlags: 0

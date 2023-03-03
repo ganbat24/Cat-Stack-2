@@ -17,7 +17,6 @@ public class TetrisCat : MonoBehaviour
     }
 
     private Vector3 offset = Vector3.zero;
-    private float lastDownTime = 0f;
 
     private void OnMouseUp() {
         if(!isDraggable) return;
@@ -30,7 +29,7 @@ public class TetrisCat : MonoBehaviour
             isDraggable = false;
             OnFreedom?.Invoke();
         }else{
-            if(Time.time - lastDownTime < 0.1f){
+            if(Vector3.Distance(initialPosition, transform.position) < 0.5f){
                 transform.Rotate(0, 0, -90);
             }
             transform.position = initialPosition;    
@@ -41,7 +40,6 @@ public class TetrisCat : MonoBehaviour
     private void OnMouseDown()
     {
         if(!isDraggable) return;
-        lastDownTime = Time.time;
         foreach(Collider2D collider in GetComponents<Collider2D>()){
             collider.isTrigger = true;
         }
@@ -54,5 +52,11 @@ public class TetrisCat : MonoBehaviour
         if(!isDraggable) return;
         Vector3 newPosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10.0f);
         transform.position = Camera.main.ScreenToWorldPoint(newPosition) + offset;
+    }
+
+    private void OnCollisionEnter2D(Collision2D other) {
+        if(Random.Range(0, 100) < 15) {
+            AudioManager.Meow();
+        }
     }
 }
