@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7046020548672489564}
   - component: {fileID: 5443252803498056618}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Renderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -72,7 +72,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 0b8cb38a915a6c04093ec139aff455bc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: 2360134527518003508}
   - component: {fileID: 1248725901472111080}
   - component: {fileID: 7480238387981873880}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: CatBlock-06
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -114,7 +114,7 @@ Transform:
   m_GameObject: {fileID: 7116597144994427245}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.9, y: 0.9, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7046020548672489564}
@@ -154,6 +154,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c230befb9408e645a98cb30923a190b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  badMask:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!61 &2360134527518003508
 BoxCollider2D:
   m_ObjectHideFlags: 0

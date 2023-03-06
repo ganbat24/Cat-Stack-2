@@ -8,6 +8,8 @@ public class TetrisCat : MonoBehaviour
     bool isDraggable = true;
     List<BoxCollider2D> colliders;
 
+    [SerializeField] LayerMask badMask = default;
+
     Vector3 initialPosition = Vector3.zero;
 
     public event System.Action OnFreedom;
@@ -19,10 +21,16 @@ public class TetrisCat : MonoBehaviour
         GameManager.onGamePause += OnPause;
         GameManager.onGameUnPause += OnUnPause;
         GameManager.onGameStart += DestroyCat;
+        transform.GetComponentInChildren<SpriteRenderer>().sortingOrder = 10;
     }
 
+    bool splashed = false;
     private void Update() {
-        if(!isDraggable && Height() < -5){
+        if(!isDraggable && !splashed && transform.position.y < -0.5){
+            AudioManager.Splosh();
+            splashed = true;
+        }
+        if(!isDraggable && Height() < -1){
             GameManager.DeadCat();
             DestroyCat();
         }
@@ -62,7 +70,6 @@ public class TetrisCat : MonoBehaviour
     }
 
     void Freedom(){
-        transform.GetComponentInChildren<SpriteRenderer>().sortingOrder = 0;
         transform.parent = null;
         foreach(Collider2D collider in GetComponents<Collider2D>()){
             collider.isTrigger = false;
@@ -85,7 +92,7 @@ public class TetrisCat : MonoBehaviour
     private void OnMouseUp() {
         if(GameManager.currentState != GameState.Game) return;
         if(!isDraggable) return;
-        if(Lowth() >= Camera.main.transform.position.y-2.75){
+        if(Vector3.Distance(initialPosition, transform.localPosition) > 1f){
             Freedom();
         }else{
             if(Vector3.Distance(initialPosition, transform.localPosition) < 0.5f){
@@ -125,6 +132,9 @@ public class TetrisCat : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other) {
         if(GameManager.currentState != GameState.Game) return;
+        if((1<<other.gameObject.layer & badMask) > 0){
+            GameManager.EndGame();
+        }
         //has 5percent chance of meowing when collided
         if(Random.Range(0, 100) < 5) {
             AudioManager.Meow();

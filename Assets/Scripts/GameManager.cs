@@ -6,10 +6,9 @@ using TMPro;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
-    public static float highScore = 3f;
+    public static float highScore = 4f;
     public static float currentScore = 0f;
     public static float currentHighScore = 0f;
-    public static int deadCats = 0;
     static bool firstBreak = true;
     public static GameState currentState = GameState.Menu;
 
@@ -18,13 +17,12 @@ public class GameManager : MonoBehaviour
     [SerializeField] RectTransform currentScoreBar = default;
     [SerializeField] TextMeshProUGUI currentScoreText = default;
     [SerializeField] TextMeshProUGUI gameOverText = default;
+    [SerializeField] TextMeshProUGUI catLivesText = default;
 
     [SerializeField] GameObject gameScreen = default;
     [SerializeField] GameObject gameOverScreen = default;
     [SerializeField] GameObject pauseScreen = default;
     [SerializeField] GameObject menuScreen = default;
-
-    [SerializeField] List<GameObject> lives = new List<GameObject>();
 
     public static List<TetrisCat> freeCats = new List<TetrisCat>();
     
@@ -42,59 +40,58 @@ public class GameManager : MonoBehaviour
     }
 
     private void Start() {
-        Invoke("StartGame", 0.1f);
     }
 
-    public void UnPauseGame(){
+    public static void UnPauseGame(){
         onGameUnPause?.Invoke();
-        pauseScreen.SetActive(false);
+        instance.pauseScreen.SetActive(false);
         currentState = GameState.Game;
     }
 
-    public void PauseGame(){
+    public static void PauseGame(){
         onGamePause?.Invoke();
-        pauseScreen.SetActive(true);
+        instance.pauseScreen.SetActive(true);
         currentState = GameState.Pause;
     }
 
-    public void StartGame(){
+    public static void StartGame(){
         onGameStart?.Invoke();
         freeCats.Clear();
-        gameScreen.SetActive(true);
-        gameOverScreen.SetActive(false);
-        pauseScreen.SetActive(false);
-        menuScreen.SetActive(false);
-        highScoreText.gameObject.SetActive(true);
-        highScoreBar.gameObject.SetActive(true);
-        currentScoreBar.gameObject.SetActive(true);
-        currentScoreText.gameObject.SetActive(true);
-        foreach(GameObject life in lives){
-            life.SetActive(true);
-        }
+        instance.gameScreen.SetActive(true);
+        instance.gameOverScreen.SetActive(false);
+        instance.pauseScreen.SetActive(false);
+        instance.menuScreen.SetActive(false);
+        instance.highScoreText.gameObject.SetActive(true);
+        instance.highScoreBar.gameObject.SetActive(true);
+        instance.currentScoreBar.gameObject.SetActive(true);
+        instance.currentScoreText.gameObject.SetActive(true);
+        deadCats = 0;
         currentScore = 0;
         currentHighScore = 0;
-        deadCats = 0;
         firstBreak = true;
         currentState = GameState.Game;
     }
 
+    public static int deadCats = 0;
+
     public static void DeadCat(){
-        instance.lives[deadCats].SetActive(false);
         deadCats++;
+        instance.catLivesText.text = "" + (9-deadCats);
         if(deadCats >= 9){
-            instance.EndGame();
+            EndGame();
         }
     }
-    float p = 10;
+    static float p = 10;
 
-    public void EndGame(){
+    public static void EndGame(){
         onGameOver?.Invoke();
-        gameOverScreen.SetActive(true);
-        gameOverText.text = "Score: " + Mathf.Floor(currentHighScore*p)/p + "\n You have used up all your 9 cat lives :(";
+        instance.gameOverScreen.SetActive(true);
+        instance.gameOverText.text = "Score: " + Mathf.Floor(currentHighScore*p)/p;
         currentState = GameState.GameOver;
     }
 
     private void Update() {
+        instance.catLivesText.text = "" + (9-deadCats);
         if(currentState == GameState.Game){
             UpdateScores();
             UpdateScoreUI();
@@ -119,7 +116,7 @@ public class GameManager : MonoBehaviour
         if(currentScore > highScore){
             highScore = currentScore;
             if(firstBreak){
-                Debug.Log("congrats");
+                AudioManager.Reward();
                 firstBreak = false;
                 highScoreText.gameObject.SetActive(false);
                 highScoreBar.gameObject.SetActive(false);
@@ -132,7 +129,8 @@ public class GameManager : MonoBehaviour
         highScoreText.text = "High Score: " + Mathf.Floor(highScore*p)/p;
 
         currentScoreBar.localPosition = currentHighScore * Vector3.up;
-        currentScoreText.text = "Current Score: " + Mathf.Floor(currentHighScore*p)/p;
+        currentScoreText.text = "Score: " + Mathf.Floor(currentHighScore*p)/p;
+
     }
 }
 

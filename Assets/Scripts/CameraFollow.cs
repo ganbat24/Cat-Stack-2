@@ -10,7 +10,7 @@ public class CameraFollow : MonoBehaviour
 
     private void FixedUpdate() {
         if(GameManager.currentState != GameState.Game) return;
-        Vector3 desiredPosition = Mathf.Max(GameManager.currentScore, 2) * Vector3.up * emphasisOnTop;
+        Vector3 desiredPosition = GameManager.currentScore * Vector3.up * emphasisOnTop;
         float totalSpeed = emphasisOnTop;
         foreach(TetrisCat cat in GameManager.freeCats){
             float catSpeed = cat.getSpeed();
@@ -18,6 +18,7 @@ public class CameraFollow : MonoBehaviour
             totalSpeed += catSpeed;
         }
         if(totalSpeed > 0) desiredPosition /= totalSpeed;
+        desiredPosition.y = Mathf.Max(desiredPosition.y, 4.41f);
 
         transform.position = Vector3.Lerp(transform.position, desiredPosition + offset, Time.fixedDeltaTime / followTime);
     }
